@@ -1,6 +1,7 @@
 import { PropTypes } from "prop-types";
 import Trash from "../icons/Trash.jsx";
 import { useState, useRef, useEffect } from "react";
+import { setNewOffset } from "../utils.js";
 
 function NoteCard({ note }) {
   const [position, setPosition] = useState(JSON.parse(note.position));
@@ -38,10 +39,8 @@ function NoteCard({ note }) {
     mouseStartPos.x = e.clientX;
     mouseStartPos.y = e.clientY;
 
-    setPosition({
-      x: cardRef.current.offsetLeft - mouseMoveDir.x,
-      y: cardRef.current.offsetTop - mouseMoveDir.y,
-    });
+    const newPosition = setNewOffset(cardRef.current, mouseMoveDir);
+    setPosition(newPosition);
   }
 
   const mouseUp = () => {
