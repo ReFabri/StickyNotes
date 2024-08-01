@@ -2,6 +2,7 @@ import { PropTypes } from "prop-types";
 import Trash from "../icons/Trash.jsx";
 import { useRef, useEffect } from "react";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils.js";
+import { db } from "../appwrite/databases.js";
 
 function NoteCard({ note }) {
   let position = JSON.parse(note.position);
@@ -38,10 +39,22 @@ function NoteCard({ note }) {
     position = newPosition;
   }
 
-  const mouseUp = () => {
+  async function mouseUp() {
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
-  };
+
+    const newPosition = setNewOffset(cardRef.current);
+    saveData("position", newPosition);
+  }
+
+  async function saveData(key, value) {
+    const payload = { [key]: JSON.stringify(value) };
+    try {
+      await db.notes.update(note.$id, payload);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div
