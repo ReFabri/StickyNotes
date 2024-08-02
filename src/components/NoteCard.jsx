@@ -1,15 +1,14 @@
 import { PropTypes } from "prop-types";
-import Trash from "../icons/Trash.jsx";
+import DeleteButton from "./DeleteButton.jsx";
 import { useState, useRef, useEffect } from "react";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils.js";
 import { db } from "../appwrite/databases.js";
 import Spinner from "../icons/Spinner.jsx";
 
-function NoteCard({ note }) {
+function NoteCard({ note, setNotes }) {
   const [saving, setSaving] = useState(false);
 
   const [position, setPosition] = useState(JSON.parse(note.position));
-  // let position = JSON.parse(note.position);
   const colors = JSON.parse(note.colors);
   const body = bodyParser(note.body);
 
@@ -90,7 +89,7 @@ function NoteCard({ note }) {
         style={{ backgroundColor: colors.colorHeader }}
         onMouseDown={mouseDown}
       >
-        <Trash />
+        <DeleteButton noteId={note.$id} setNotes={setNotes} />
         {saving && (
           <div className="card-saving">
             <Spinner color={colors.colorText} />
@@ -118,6 +117,7 @@ function NoteCard({ note }) {
 
 NoteCard.propTypes = {
   note: PropTypes.object.isRequired,
+  setNotes: PropTypes.func.isRequired,
 };
 
 export default NoteCard;

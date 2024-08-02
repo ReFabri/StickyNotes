@@ -17,7 +17,7 @@ function NotesPage() {
   return (
     <div>
       {notes.map((note) => (
-        <NoteCard note={note} key={note.$id} />
+        <NoteCard note={note} setNotes={setNotes} key={note.$id} />
       ))}
     </div>
   );
