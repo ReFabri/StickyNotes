@@ -5,7 +5,7 @@ import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils.js";
 import { db } from "../appwrite/databases.js";
 import Spinner from "../icons/Spinner.jsx";
 
-function NoteCard({ note, setNotes }) {
+function NoteCard({ note }) {
   const [saving, setSaving] = useState(false);
 
   const [position, setPosition] = useState(JSON.parse(note.position));
@@ -91,7 +91,7 @@ function NoteCard({ note, setNotes }) {
         style={{ backgroundColor: colors.colorHeader }}
         onMouseDown={mouseDown}
       >
-        <DeleteButton noteId={note.$id} setNotes={setNotes} />
+        <DeleteButton noteId={note.$id} />
         {saving && (
           <div className="card-saving">
             <Spinner color={colors.colorText} />
