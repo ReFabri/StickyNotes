@@ -10,7 +10,20 @@ const NoteProvider = ({ children }) => {
 
   return (
     <NoteContext.Provider value={contextData}>
-      {loading ? <Spinner /> : children}
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Spinner size="100" />
+        </div>
+      ) : (
+        children
+      )}
     </NoteContext.Provider>
   );
 };
