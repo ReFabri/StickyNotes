@@ -1,9 +1,12 @@
 import Plus from "../icons/Plus";
 import colors from "../assets/colors.json";
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { db } from "../appwrite/databases";
+import { NoteContext } from "../context/NoteContext";
 
 function AddButton() {
+  const { setNotes } = useContext(NoteContext);
+
   const startingPos = useRef(10);
 
   const addNote = async () => {
@@ -18,7 +21,7 @@ function AddButton() {
     startingPos.current += 10;
 
     const response = await db.notes.create(payload);
-    console.log(response);
+    setNotes((prevState) => [response, ...prevState]);
   };
 
   return (

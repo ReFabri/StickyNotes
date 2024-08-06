@@ -19,6 +19,7 @@ function NoteCard({ note }) {
 
   useEffect(() => {
     autoGrow(textAreaRef);
+    setZIndex(cardRef.current);
   }, []);
 
   async function handleKeyUp() {
