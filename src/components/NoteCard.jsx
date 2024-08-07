@@ -1,14 +1,16 @@
 import { PropTypes } from "prop-types";
 import DeleteButton from "./DeleteButton.jsx";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils.js";
 import { db } from "../appwrite/databases.js";
 import Spinner from "../icons/Spinner.jsx";
+import { NoteContext } from "../context/NoteContext.jsx";
 
 function NoteCard({ note }) {
   const [saving, setSaving] = useState(false);
 
   const [position, setPosition] = useState(JSON.parse(note.position));
+  const { setSelectedNote } = useContext(NoteContext);
   const colors = JSON.parse(note.colors);
   const body = bodyParser(note.body);
 
@@ -36,12 +38,13 @@ function NoteCard({ note }) {
 
   function mouseDown(e) {
     if (e.target.className === "card-header") {
-      setZIndex(cardRef.current);
       mouseStartPos.x = e.clientX;
       mouseStartPos.y = e.clientY;
 
       document.addEventListener("mousemove", mouseMove);
       document.addEventListener("mouseup", mouseUp);
+      setZIndex(cardRef.current);
+      setSelectedNote(note);
     }
   }
 
@@ -110,6 +113,7 @@ function NoteCard({ note }) {
           }}
           onFocus={() => {
             setZIndex(cardRef.current);
+            setSelectedNote(note);
           }}
           onKeyUp={handleKeyUp}
         ></textarea>
